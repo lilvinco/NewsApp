@@ -1,44 +1,108 @@
 package com.example.android.newnewsapp;
 
-import java.util.Date;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class News {
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+import java.util.Date;
+@Entity(tableName = "Note")
+public class News implements Parcelable {
     /**
      * Member variables
      */
-    private String mCategory;
-    private String mHeadline;
-    private Date mDate;
-    private String mUrl;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private String title;
+    private String Content;
+    private String date;
+    //  private String mUrl;
 
 
     /**
      * Constructors
      */
-    public News(String mCategory, String mHeadline, Date mDate, String mUrl) {
-        this.mCategory = mCategory;
-        this.mHeadline = mHeadline;
-        this.mDate = mDate;
-        this.mUrl = mUrl;
+    public News(String title, String content, String mDate) {
+        this.title = title;
+        this.Content = content;
+        this.date = mDate;
     }
 
+
+    public News() {
+    }
+    /**
+     * Parcelable constructor
+     */
+    @Ignore
+    protected News(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        Content = in.readString();
+        date = in.readString();
+    }
+
+    public static final Creator<News> CREATOR = new Creator<News>() {
+        @Override
+        public News createFromParcel(Parcel in) {
+            return new News(in);
+        }
+
+        @Override
+        public News[] newArray(int size) {
+            return new News[size];
+        }
+    };
 
     /**
      * Getters and setters
      */
-    public String getCategory() {
-        return mCategory;
+    public int getId() {
+        return id;
     }
 
-    public String getHeadline() {
-        return mHeadline;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public Date getDate() {
-        return mDate;
+    public String getTitle() {
+        return title;
     }
 
-    public String getUrl() {
-        return mUrl;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return Content;
+    }
+
+    public void setContent(String content) {
+        Content = content;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @Ignore
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    @Ignore
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeString(Content);
+        parcel.writeString(date);
     }
 }
